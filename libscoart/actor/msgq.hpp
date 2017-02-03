@@ -1,8 +1,18 @@
 #ifndef __LIBSCOA_MSGQ_HPP
 #define __LIBSCOA_MSGQ_HPP
 
-typedef struct msgq_t {
-    // TODO
-} msgq_t;
+template <typename T>
+class Msgq {
+public:
+    explicit Msgq();
+private:
+    struct Node {
+        T msg;
+        Node *next;
+    };
+
+    Node *head;
+    Node *tail;
+}
 
 #endif // !__LIBSCOA_MSGQ_HPP
