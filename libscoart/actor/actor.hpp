@@ -1,11 +1,16 @@
+#include <ctime>
 #include "../libscoa.hpp"
 
 class Actor {
 public:
-    virtual scoamsg_t send() = 0;
-    virtual void receive() = 0;
+    bool send(){
+        //TODO
+    };
+    &scoa_msg_t receive(std::time_t){
+        //TODO
+    }
 private:
     int id;
-    Msgq<scoamsg_t> *inbox;
-    Msgq<scoamsg_t> *outbox;
+    Msgq<scoa_msg_t> *inbox;
+    Msgq<scoa_msg_t> *outbox;
 }
