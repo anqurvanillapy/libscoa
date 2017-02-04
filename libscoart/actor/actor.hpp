@@ -1,11 +1,16 @@
+#ifndef __LIBSCOA_ACTOR_HPP
+#define __LIBSCOA_ACTOR_HPP
+
 #include "../libscoa.hpp"
 
 class Actor {
 public:
-    virtual scoamsg_t send() = 0;
-    virtual void receive() = 0;
+    virtual scoa_msg_t& send() = 0;
+    virtual void receive(scoa_msg_t&) = 0;
 private:
-    int id;
-    Msgq<scoamsg_t> *inbox;
-    Msgq<scoamsg_t> *outbox;
+    uint64_t id;
+    Msgq<scoa_msg_t> *inbox;
+    Msgq<scoa_msg_t> *outbox;
 }
+
+#endif // !__LIBSCOA_ACTOR_HPP

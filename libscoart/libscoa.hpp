@@ -1,8 +1,8 @@
 #ifndef __LIBSCOA_HPP
 #define __LIBSCOA_HPP
 
-typedef struct scoamsg_t {
+typedef struct scoa_msg_t {
     // TODO
-} scoamsg_t;
+} scoa_msg_t;
 
 #endif // !__LIBSCOA_HPP
