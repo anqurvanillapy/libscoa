@@ -5,6 +5,9 @@ template <typename T>
 class Msgq {
 public:
     explicit Msgq();
+
+    void enqueue(scoa_msg_t& msg);
+    void msg_destroy();
 private:
     struct Node {
         T msg;
