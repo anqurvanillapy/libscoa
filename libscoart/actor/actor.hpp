@@ -6,6 +6,6 @@ public:
     virtual void receive() = 0;
 private:
     int id;
-    msq_t *inbox;
-    msq_t *outbox;
+    Msgq<scoamsg_t> *inbox;
+    Msgq<scoamsg_t> *outbox;
 }
