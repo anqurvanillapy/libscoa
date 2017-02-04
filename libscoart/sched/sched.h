@@ -1,24 +1,18 @@
 #ifndef __LIBSCOA_SCHED_H
 #define __LIBSCOA_SCHED_H
 
-#ifdef __cplusplus
-
-extern "C" {
-
-#endif
-
 typedef struct scheduler scheduler_t;
 
-struct scheduler{
-    //TODO
-};
+class Scheduler
+{
+public:
+    explicit Scheduler();
 
-
-
-#ifdef __cplusplus
-
+private:
+    class ScoaContext
+    {
+        //TODO
+    }
 }
-
-#endif
 
 #endif /* __LIBSCOA_SCHED_H */
