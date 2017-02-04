@@ -6,7 +6,7 @@
 class Actor {
 public:
     bool send(){};
-    &scoa_msg_t receive(std::time_t){}
+    scoa_msg_t &receive(std::time_t){};
 
 private:
     uint64_t id;

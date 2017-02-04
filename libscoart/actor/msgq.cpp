@@ -6,7 +6,7 @@ Msgq::Msgq()
 
 template <typename T>
 void
-Msgq::enqueue(scoa_msg_t& msg)
+Msgq::enqueue(scoa_msg_t &msg)
 {
     // TODO: message queue enqueueing
 }
