@@ -1,16 +1,14 @@
 #ifndef __LIBSCOA_MSGQ_H
 #define __LIBSCOA_MSGQ_H
 
-#include <queue>
+#include <boost/lockfree/queue.hpp>
 #include "../libscoa.h"
 template <typename T>
-class MessageQueue
+class MessageQueue : public boost::lockfree::queue<T>
 {
 public:
     explicit MessageQueue();
-
 private:
-    std::queue<T> q;
 }
 
 #endif // !__LIBSCOA_MSGQ_H

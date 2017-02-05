@@ -2,7 +2,6 @@
 #define __LIBSCOA_ACTOR_H
 
 #include "../libscoa.h"
-#include <queue>
 class Actor 
 {
 public:
