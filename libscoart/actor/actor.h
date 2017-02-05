@@ -10,8 +10,8 @@ public:
     
     Actor(
         uint64_t id, 
-        std::queue<scoa_msg_t>& inbox,
-        std::queue<scoa_msg_t>& outbox );
+        MessageQueue<scoa_msg_t>& inbox,
+        MessageQueue<scoa_msg_t>& outbox );
 
     bool send(scoa_msg_t &);
     scoa_msg_t& receive(std::chrono::milliseconds);
@@ -19,8 +19,8 @@ public:
 private:
     uint64_t scoa_id;
     // inbox and outbox manage by scheduler
-    std::queue<scoa_msg_t> &inbox;
-    std::queue<scoa_msg_t> &outbox;
+    MessageQueue<scoa_msg_t> &inbox;
+    MessageQueue<scoa_msg_t> &outbox;
 }
 
 #endif // !__LIBSCOA_ACTOR_H
