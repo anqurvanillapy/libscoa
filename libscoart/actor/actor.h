@@ -4,13 +4,6 @@
 #include "../libscoa.h"
 #include "../sched/sched.h"
 #include "msgq.h"
-class ActorContext
-{
-public:
-
-private:
-
-}
 
 class Actor 
 {
