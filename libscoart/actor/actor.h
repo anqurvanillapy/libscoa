@@ -2,7 +2,7 @@
 #define __LIBSCOA_ACTOR_H
 
 #include "../libscoa.h"
-#include "../sched/scheduler.h"
+#include "../sched/sched.h"
 #include "msgq.h"
 class ActorContext
 {

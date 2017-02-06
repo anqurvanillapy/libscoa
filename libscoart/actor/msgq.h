@@ -7,7 +7,7 @@ template <typename T>
 class MessageQueue : public boost::lockfree::queue<T>
 {
 public:
-    explicit MessageQueue();
+    MessageQueue();
 private:
 }
 
