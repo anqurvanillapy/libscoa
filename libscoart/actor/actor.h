@@ -10,18 +10,25 @@
 #define __LIBSCOA_ACTOR_H
 
 #include "../libscoa.h"
+#include "msgq.h"
+
+/* User-defined actor class */
 
 class Actor {
 public:
-    virtual scoa_msg_t& send();
-    virtual void receive(scoa_msg_t&);
+    virtual scoa_msg_t& send() = 0;
+    virtual void receive(scoa_msg_t&) = 0;
+}
 
+/* Prototype of actor class for instantiation by scheduler */
+
+class ActorPrototype {
+public:
+    ActorPrototype(Actor&);
 private:
     uint64_t id;
     Msgq<scoa_msg_t> *inbox;
     Msgq<scoa_msg_t> *outbox;
-}
-
-class ActorPrototype { };
+};
 
 #endif // !__LIBSCOA_ACTOR_H
