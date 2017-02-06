@@ -2,7 +2,7 @@
 #define __LIBSCOA_SCHEDULER_H
 
 
-#include "../actor/Actor.h"
+#include "../actor/actor.h"
 class Scheduler
 {
 
