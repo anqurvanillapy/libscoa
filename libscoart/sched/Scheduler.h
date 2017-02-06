@@ -3,8 +3,6 @@
 
 
 #include "../actor/Actor.h"
-#include "SchedulerContext.h"
-
 class Scheduler
 {
 
