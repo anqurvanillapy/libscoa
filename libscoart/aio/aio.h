@@ -2,7 +2,7 @@
  *  AIO
  *  ===
  *
- *  Asynchronous IO implemented by Linux's epoll and macOS/BSD's kqueue, for
+ *  Asynchronous I/O implemented by Linux's epoll and macOS/BSD's kqueue, for
  *  better portability.
  */
 
@@ -10,6 +10,15 @@
 #define __LIBSCOA_AIO_H
 
 #include "../libscoa.h"
+#include "../../common/platform.h"
+
+#if defined(IS_LINUX)
+#   define AIO_USE_EPOLL
+#elif defined(IS_MACOS) || defined(IS_FREEBSD)
+#   define AIO_USE_KQUEUE
+#else
+#   error PLATFORM NOT SUPPORTED!
+#endif
 
 #define MAX_EVENTS 64
 
@@ -21,9 +30,9 @@ public:
     scoa_aio_facility& get_aio_facility();
 }
 
-namespace scoa_aio {
+namespace scoa {
     // TODO: Non-blocking stdio
-    void putstd(int, std::string); // int - stdin, stdout, stderr
-}
+    void fputs(int, std::string); // int - stdin, stdout, stderr
+} // namespace scoa
 
 #endif // !__LIBSCOA_AIO_H

@@ -7,6 +7,6 @@ typedef struct scoa_msg_t {
 
 namespace scoa {
     void spawn(Actor&);
-} // !namespace scoa
+} // namespace scoa
 
 #endif // !__LIBSCOA_H
