@@ -18,13 +18,12 @@ class Actor
 public:
     Actor();
     
-    Actor(
-        uint64_t id, 
-        MessageQueue<scoa_msg_t>& inbox,
+    explicit Actor(uint64_t id, MessageQueue<scoa_msg_t>& inbox,
         MessageQueue<scoa_msg_t>& outbox );
 
-    bool send(scoa_msg_t&);
-    scoa_msg_t& receive(std::chrono::milliseconds);
+    bool        send(scoa_msg_t& msg);
+    scoa_msg_t& recv(std::chrono::milliseconds timeout);
+    void        be(void *arg);
 
 private:
     uint64_t scoa_id;
@@ -36,16 +35,5 @@ private:
     // waiting_for asyncio event id
     uint64_t   waiting_for;
 }
-
-/* Prototype of actor class for instantiation by scheduler */
-
-class ActorPrototype {
-public:
-    ActorPrototype(Actor&);
-private:
-    uint64_t id;
-    Msgq<scoa_msg_t> *inbox;
-    Msgq<scoa_msg_t> *outbox;
-};
 
 #endif // !__LIBSCOA_ACTOR_H
