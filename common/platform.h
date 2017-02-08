@@ -1,7 +1,7 @@
 #ifndef __LIBSCOA_PLATFORM_H
 #define __LIBSCOA_PLATFORM_H
 
-/* Macro for extern "C" */
+/// Macro for extern "C"
 #if defined(__cpluscplus)
 #   define SCOA_EXTERN_C_BEGIN extern "C" {
 #   define SCOA_EXTERN_C_END }
@@ -10,7 +10,7 @@
 #   define SCOA_EXTERN_C_END
 #endif
 
-/* Platform (Win32, Visual Studio, and further MinGW not supported) */
+/// Platform (Win32, Visual Studio, and further MinGW not supported)
 #if defined(__linux__)
 #   define IS_LINUX
 #elif defined(__FreeBSD__)
@@ -26,7 +26,7 @@
 #   define IS_POSIX_BASED
 #endif
 
-/* Programming model */
+/// Data model
 #if defined(__LP64__)
 #   define IS_LP64
 #else
@@ -39,7 +39,7 @@
 #   define __int128_t dw_t
 #endif
 
-/* Other utilities */
+/// Other utilities
 #include "threads.h"
 
 #endif // !__LIBSCOA_PLATFORM_H

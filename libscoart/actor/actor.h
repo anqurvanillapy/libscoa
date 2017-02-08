@@ -2,8 +2,10 @@
  *  Actor
  *  =====
  *
- *  Interface for user-defined behaviours and implementations of actors, used by
- *  scheduler to instantiate the ActorPrototype.
+ *  User-defined actors could implement the pure virtual function be(), namely
+ *  behaviour, to specify a custom set of actions, e.g. message sending and
+ *  and receiving, by using the public member functions send() and recv(), which
+ *  are crucially dispatched by the scheduler.
  */
 
 #ifndef __LIBSCOA_ACTOR_H
@@ -17,22 +19,24 @@
 class Actor {
 public:
     Actor();
-    
     explicit Actor(uint64_t id, MessageQueue<scoa_msg_t>& inbox,
-        MessageQueue<scoa_msg_t>& outbox );
+        MessageQueue<scoa_msg_t>& outbox);
 
     bool        send(scoa_msg_t& msg);
     scoa_msg_t& recv(std::chrono::milliseconds timeout);
-    void        be(void *arg);
+    void        be(void *arg) = 0;
 
 private:
     uint64_t scoa_id;
-    // inbox and outbox manage by scheduler
+
+    // Messages in the charge of scheduler
     MessageQueue<scoa_msg_t>& inbox;
     MessageQueue<scoa_msg_t>& outbox;
-    // in which scheduler    
+
+    // Dispatched by which scheduler
     Scheduler& scheduler;
-    // waiting_for asyncio event id
+
+    // Id of expected asnyc I/O event
     uint64_t   waiting_for;
 }
 

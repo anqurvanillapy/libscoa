@@ -22,7 +22,7 @@
 
 #define MAX_EVENTS 64
 
-// Wrapper type for platform-specific I/O notification mechanisms
+/// Wrapper type for platform-specific I/O notification mechanisms
 typedef struct scoa_aio_facility scoa_aio_facility;
 
 class AsyncIO {
@@ -32,7 +32,7 @@ public:
 
 namespace scoa {
     // TODO: Non-blocking stdio
-    void fputs(int, std::string); // int - stdin, stdout, stderr
+    void fputs(int fd, std::string str); // int - stdin, stdout, stderr
 } // namespace scoa
 
 #endif // !__LIBSCOA_AIO_H

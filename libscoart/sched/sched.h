@@ -1,3 +1,8 @@
+/**
+ *  Scheduler
+ *  =========
+ */
+
 #ifndef __LIBSCOA_SCHED_H
 #define __LIBSCOA_SCHED_H
 
