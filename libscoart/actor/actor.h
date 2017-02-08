@@ -9,12 +9,12 @@
 #ifndef __LIBSCOA_ACTOR_H
 #define __LIBSCOA_ACTOR_H
 
+#include <cstdint>
 #include "../libscoa.h"
 #include "../sched/sched.h"
 #include "msgq.h"
 
-class Actor 
-{
+class Actor {
 public:
     Actor();
     

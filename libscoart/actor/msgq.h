@@ -3,12 +3,11 @@
 
 #include <boost/lockfree/queue.hpp>
 #include "../libscoa.h"
+
 template <typename T>
-class MessageQueue : public boost::lockfree::queue<T>
-{
+class MessageQueue : public boost::lockfree::queue<T> {
 public:
     MessageQueue();
-private:
 }
 
 #endif // !__LIBSCOA_MSGQ_H

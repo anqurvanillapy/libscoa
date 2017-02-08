@@ -5,6 +5,15 @@ libscoa
 
 WIP.
 
+Prerequisites
+-------------
+
+- `boost`
+
+### For dev
+
+- `gtest`
+
 License
 -------
 

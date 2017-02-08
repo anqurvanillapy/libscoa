@@ -1,5 +1,5 @@
-#ifndef __LIBSCOA_SCHEDULER_H
-#define __LIBSCOA_SCHEDULER_H
+#ifndef __LIBSCOA_SCHED_H
+#define __LIBSCOA_SCHED_H
 
 class Scheduler {
 public:

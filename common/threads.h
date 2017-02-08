@@ -8,8 +8,6 @@
 #ifndef __LIBSCOA_THREADS_H
 #define __LIBSCOA_THREADS_H
 
-#include <stdbool.h>
-
 #ifdef IS_POSIX_BASED
 #   include <pthread.h>
 #   define scoa_thread_t pthread_t
