@@ -1,17 +1,6 @@
 #ifndef __LIBSCOA_SCHEDULER_H
 #define __LIBSCOA_SCHEDULER_H
 
+class Scheduler { };
 
-#include "../actor/actor.h"
-class Scheduler
-{
-
-public:
-    Scheduler();
-
-private:
-    Scheduler& scheduler;
-
-}
-
-#endif /* __LIBSCOA_SCHED_H */
+#endif // !__LIBSCOA_SCHED_H

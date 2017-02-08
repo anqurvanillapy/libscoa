@@ -1,3 +1,11 @@
+/**
+ *  Actor
+ *  =====
+ *
+ *  Interface for user-defined behaviours and implementations of actors, used by
+ *  scheduler to instantiate the ActorPrototype.
+ */
+
 #ifndef __LIBSCOA_ACTOR_H
 #define __LIBSCOA_ACTOR_H
 
@@ -28,5 +36,16 @@ private:
     // waiting_for asyncio event id
     uint64_t   waiting_for;
 }
+
+/* Prototype of actor class for instantiation by scheduler */
+
+class ActorPrototype {
+public:
+    ActorPrototype(Actor&);
+private:
+    uint64_t id;
+    Msgq<scoa_msg_t> *inbox;
+    Msgq<scoa_msg_t> *outbox;
+};
 
 #endif // !__LIBSCOA_ACTOR_H
