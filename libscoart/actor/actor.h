@@ -18,13 +18,13 @@
 
 class Actor {
 public:
-    Actor();
-    explicit Actor(uint64_t id, MessageQueue<scoa_msg_t>& inbox,
-        MessageQueue<scoa_msg_t>& outbox);
 
     bool        send(scoa_msg_t& msg);
     scoa_msg_t& recv(std::chrono::milliseconds timeout);
     void        be(void *arg) = 0;
+    void        scoa_actor_init_(uint64_t id, 
+                                MessageQueue<scoa_msg_t>& inbox,
+                                MessageQueue<scoa_msg_t>& outbox);
 
 private:
     uint64_t scoa_id;
