@@ -19,10 +19,10 @@
 class Actor {
 public:
 
-    bool        send(scoa_msg_t& msg);
+    bool        send(uint64_t actor_id, scoa_msg_t& msg);
     scoa_msg_t& recv(std::chrono::milliseconds timeout);
     void        be(void *arg) = 0;
-    void        scoa_actor_init_(uint64_t id, 
+    void        scoa_actor_init_(uint64_t actor_id, 
                                 MessageQueue<scoa_msg_t>& inbox,
                                 MessageQueue<scoa_msg_t>& outbox);
 
