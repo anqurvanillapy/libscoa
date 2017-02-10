@@ -1,7 +1,6 @@
 #include "aio.h"
 
-scoa_aio_facility&
-AsyncIO::get_aio_facility()
+AsyncIO::AsyncIO()
 {
-    // TODO: return specific mechanism
+    // TODO: return specific mechanism and do the initialization.
 }

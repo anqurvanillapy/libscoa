@@ -22,12 +22,29 @@
 
 #define MAX_EVENTS 64
 
-/// Wrapper type for platform-specific I/O notification mechanisms
-typedef struct scoa_aio_facility scoa_aio_facility;
+/// Asynchronous I/O events.
+enum {
+    AIO_READ        = 0,
+    AIO_WRITE       = 1 << 0,
+    AIO_DESTROYED   = (uint32_t)-1
+}
+
+/// Wrapper type for platform-specific I/O notification mechanisms.
+typedef struct scoa_aio_facility_t scoa_aio_facility_t;
 
 class AsyncIO {
 public:
-    scoa_aio_facility& get_aio_facility();
+    // Constructed after a scheduler is initialized.
+    AsyncIO();
+
+    // Start an AsyncIO instance after a scheduler run its thread.
+    void start();
+
+    // Stop the event mechanism.
+    void stop();
+private:
+    scoa_thread_id_t tid;
+    scoa_aio_facility_t facility;
 }
 
 namespace scoa {

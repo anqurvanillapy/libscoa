@@ -1,6 +1,8 @@
 #ifndef __LIBSCOA_H
 #define __LIBSCOA_H
 
+#include <cstdint>
+
 typedef struct scoa_msg_t {
     // TODO
 } scoa_msg_t;

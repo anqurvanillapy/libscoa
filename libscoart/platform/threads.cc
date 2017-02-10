@@ -18,7 +18,7 @@ typedef cpuset_t cpu_set_t;
 #endif // IS_FREEBSD
 
 bool
-scoa_thread_create(scoa_thread_t& thread, thread_func start,
+scoa_thread_create(scoa_thread_id_t& thread, thread_func start,
     u32int_t cpu, void* arg)
 {
     (void)cpu;  // a thread is bound to a single CPU
@@ -28,7 +28,7 @@ scoa_thread_create(scoa_thread_t& thread, thread_func start,
     pthread_attr_init(&attr);
 
     if (cpu != (uint32_t)-1) {
-        // TODO: set affinity
+        // TODO: set affinity.
     }
 #endif // IS_LINUX || IS_FREEBSD
 }

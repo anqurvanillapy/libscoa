@@ -29,14 +29,14 @@ public:
 private:
     uint64_t scoa_id;
 
-    // Messages in the charge of scheduler
+    // Messages in the charge of scheduler.
     MessageQueue<scoa_msg_t>& inbox;
     MessageQueue<scoa_msg_t>& outbox;
 
-    // Dispatched by which scheduler
+    // Dispatched by which scheduler.
     Scheduler& scheduler;
 
-    // Id of expected asnyc I/O event
+    // Id of expected asnyc I/O event.
     uint64_t   waiting_for;
 }
 
