@@ -4,9 +4,21 @@
 
 #include <sys/epoll.h>
 
-typedef struct scoa_aio_facility {
-    int epfd;
-    struct epoll_event events[MAX_EVENTS];
-} scoa_aio_facility;
+AIOFacility::AIOFacility()
+{
+    // Create epoll instance.
+    this->epfd = epoll_create1(EPOLL_CLOEXEC);
+}
+
+bool
+AIOFacility::destroy()
+{
+
+}
+
+DECLARE_THREAD_FUNC(scoa_aio_facility_dispatch)
+{
+
+}
 
 #endif // AIO_USE_EPOLL

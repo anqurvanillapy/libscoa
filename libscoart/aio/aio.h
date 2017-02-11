@@ -29,8 +29,17 @@ enum {
     AIO_DESTROYED   = (uint32_t)-1
 }
 
-/// Wrapper type for platform-specific I/O notification mechanisms.
-typedef struct scoa_aio_facility_t scoa_aio_facility_t;
+class AIOFacility {
+public:
+    AIOFacility();
+    bool destroy();
+private:
+#if defined(AIO_USE_EPOLL)
+    int epfd;
+    struct epoll_event events[MAX_EVENTS];
+#elif defined(AIO_USE_KQUEUE)
+#endif
+}
 
 class AsyncIO {
 public:
@@ -43,8 +52,9 @@ public:
     // Stop the event mechanism.
     void stop();
 private:
+    uint32_t cpu;
     scoa_thread_id_t tid;
-    scoa_aio_facility_t facility;
+    AIOFacility* facility;
 }
 
 namespace scoa {

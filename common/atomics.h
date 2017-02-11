@@ -1,0 +1,4 @@
+#ifndef __LIBSCOA_ATOMICS_H
+#define __LIBSCOA_ATOMICS_H
+
+#endif // !__LIBSCOA_ATOMICS_H
