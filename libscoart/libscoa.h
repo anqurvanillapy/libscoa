@@ -3,6 +3,7 @@
 
 typedef struct scoa_msg_t {
     // TODO
+    //scoa_msg should be a vector
 } scoa_msg_t;
 
 namespace scoa {

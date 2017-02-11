@@ -18,6 +18,6 @@ public:
 private:
     mutable std::share_mutex mutex_;
     std::map<T> map_;
-}
+};
 
 #endif //__LIBSOCA_SCHED_THREADSAFEMAP

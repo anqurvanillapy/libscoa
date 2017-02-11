@@ -28,7 +28,7 @@ typedef struct scoa_aio_facility scoa_aio_facility;
 class AsyncIO {
 public:
     scoa_aio_facility& get_aio_facility();
-}
+};
 
 namespace scoa {
     // TODO: Non-blocking stdio

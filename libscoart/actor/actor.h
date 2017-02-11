@@ -12,32 +12,43 @@
 #define __LIBSCOA_ACTOR_H
 
 #include <cstdint>
+#include <vector>
+#include <string>
 #include "../libscoa.h"
 #include "../sched/sched.h"
 #include "msgq.h"
+#include "match.h"
+
+enum ActorState
+{
+    NORMAL,
+    ON_RECV,
+    ON_AIO
+}
 
 class Actor {
 public:
 
-    bool        send(uint64_t actor_id, scoa_msg_t& msg);
-    scoa_msg_t& recv(std::chrono::milliseconds timeout);
+    bool        send(uint64_t actor_id, SocaMessage& msg);
+    Matcher& recv(std::chrono::milliseconds,string)
     void        be(void *arg) = 0;
     void        scoa_actor_init_(uint64_t actor_id, 
-                                MessageQueue<scoa_msg_t>& inbox,
-                                MessageQueue<scoa_msg_t>& outbox);
+                                MessageQueue<scoa_msg_t>& inbox);
 
 private:
-    uint64_t scoa_id;
+    uint64_t actor_id;
 
     // Messages in the charge of scheduler
-    MessageQueue<scoa_msg_t>& inbox;
-    MessageQueue<scoa_msg_t>& outbox;
+    MessageQueue<SocaMessage&>& inbox;
+    
+    vector<scoa_msg_t&> tempbox;
 
     // Dispatched by which scheduler
     Scheduler& scheduler;
 
     // Id of expected asnyc I/O event
+    ActorState state;
     uint64_t   waiting_for;
-}
+};
 
 #endif // !__LIBSCOA_ACTOR_H

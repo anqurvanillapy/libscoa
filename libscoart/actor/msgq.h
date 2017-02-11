@@ -9,6 +9,6 @@ template <typename T>
 class MessageQueue : public boost::lockfree::queue<T> {
 public:
     MessageQueue();
-}
+};
 
 #endif // !__LIBSCOA_MSGQ_H
