@@ -9,6 +9,8 @@
 class Scheduler {
 public:
     Scheduler();
+
+    std::thread* sched_thread;
 };
 
 #endif // !__LIBSCOA_SCHEDULER_H

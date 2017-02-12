@@ -1,20 +1,25 @@
 #include "aio.h"
 
+static AsyncIO* running_aio = NULL;
+static std::thread* scoa_aio_thread = NULL;
+
 void
-AsyncIO::start()
+scoa_aio_start()
 {
-    
+    running_aio = new AsyncIO();
+    scoa_aio_thread = new std::thread(running_io);
 }
 
 void
 AsyncIO::stop()
 {
+    if (running_aio != NULL) {
+        running_aio.final();
+        scoa_aio_thread->join();
 
-}
-
-void
-AsyncIO::final()
-{
-    facility->terminated.store(true, memory_order_relaxed);
-    evenfd_write(facility->evfd, 1);
+        delete scoa_aio_thread;
+        scoa_aio_thread = NULL;
+        delete running_aio;
+        running_aio = NULL;
+    }
 }

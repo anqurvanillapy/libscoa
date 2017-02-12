@@ -2,40 +2,43 @@
 
 #ifdef AIO_USE_EPOLL
 
-#include <sys/epoll.h>
-#include <sys/eventfd.h>
-
-typedef struct scoa_aio_facility_t {
-    int epfd;
-    int evfd;
-    struct epoll_event events[MAX_EVENTS];
-    std::atomic_bool terminated;
-} scoa_aio_facility_t;
-
 AsyncIO::AsyncIO()
 {
-    facility = new scoa_aio_facility_t{};   // FIXME: struct value init
-
     // Create epoll instance.
-    facility->epfd = epoll_create1(EPOLL_CLOEXEC);
+    epfd = epoll_create1(EPOLL_CLOEXEC);
     // eventfd for breaking epoll loop.
-    facility->evfd = eventfd(0, EFD_NONBLOCK);
+    evfd = eventfd(0, EFD_NONBLOCK);
 
-    if (facility->epfd < 1 || facility->evfd < 1) return;
+    if (epfd < 1 || evfd < 1) return;
 
+    // Set up epoll configuration
     struct epoll_event epconfig;
     epconfig.data.ptr = facility;
     epconfig.events = EPOLLIN | EPOLLRDHUP | EPOLLET;
 
-    epoll_ctl(facility->epfd, EPOLL_CTL_ADD, facility->evfd, &epconfig);
+    epoll_ctl(facility.epfd, EPOLL_CTL_ADD, facility.evfd, &epconfig);
 }
 
-/// Create a thread for AsyncIO with epoll mechanism.
-std::thread
-scoa_aio_facility_dispatch([scoa_aio_facility_t* facility] {
-    while (!facility->terminated.load(memory_order_relaxed)) {
-        // TOOD: epoll loop
+void
+AsyncIO::final()
+{
+    terminated.store(true, memory_order_relaxed);
+    evenfd_write(evfd, 1);
+}
+
+/// Thread declaration for creating epoll loop.
+void
+operator() ()
+{
+    while (terminated.load(memory_order_relaxed)) {
+        // Timeout -1 to make epoll_wait block indefinitely
+        int nfds = epoll_wait(f.epfd, f.events, MAX_EVENTS, -1);
+        int i;
+
+        for (i = 0; i < nfds; ++i) {
+            // TODO
+        }
     }
-});
+}
 
 #endif // AIO_USE_EPOLL

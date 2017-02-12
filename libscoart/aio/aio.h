@@ -11,10 +11,13 @@
 
 #include "../libscoa.h"
 #include "../../common/platform.h"
+#include <thread>
 #include <atomic>
 
 #if defined(IS_LINUX)
 #   define AIO_USE_EPOLL
+#   include <sys/epoll.h>
+#   include <sys/eventfd.h>
 #elif defined(IS_MACOS) || defined(IS_FREEBSD)
 #   define AIO_USE_KQUEUE
 #else
@@ -30,26 +33,33 @@ enum {
     AIO_DESTROYED   = (uint32_t)-1
 }
 
-typedef struct scoa_aio_facility_t scoa_aio_facility_t;
-
 class AsyncIO {
 public:
-    // Constructed after a scheduler is initialized.
+    // Initialize the notification mechanism.
     AsyncIO();
+    ~AsyncIO();
 
-    // Start an AsyncIO instance after a scheduler run its thread.
-    void start();
+    // Make it callable by the thread.
+    void operator() ();
 
-    // Stop the event mechanism.
-    void stop();
-
-    // Destroy scoa_aio_facility_t
+    // Terminate the mechanism.
     void final();
 private:
     uint32_t cpu;
-    scoa_thread_id_t tid;
-    scoa_aio_facility_t* facility;
+    std::thread::id tid;
+
+#if defined(AIO_USE_EPOLL)
+    int epfd;
+    int evfd;
+    struct epoll_event events[MAX_EVENTS];
+    std::atomic_bool terminated;    
+#elif defined(AIO_USE_KQUEUE)
+#endif
 }
+
+void scoa_aio_start();
+
+bool scoa_aio_stop();
 
 namespace scoa {
     // TODO: Non-blocking stdio
