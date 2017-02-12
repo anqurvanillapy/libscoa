@@ -1,32 +1,20 @@
-/**
- *  Threads
- *  =======
- *
- *  Platform-specific multithreading support
- */
-
 #ifndef __LIBSCOA_THREADS_H
 #define __LIBSCOA_THREADS_H
 
-// XXX: pthread vs. std::thread.
+#include <thread>
 
 #ifdef IS_POSIX_BASED
-#   include <pthread.h>
-#   define scoa_thread_id_t pthread_t
-#   define DECLARE_THREAD_FUNC(FUNC_NAME) void* FUNC_NAME (void* arg)
-
 typedef void* (*thread_func) (void* arg);
-
 #endif // IS_POSIX_BASED
 
-/// Create a thread bound to a specific CPU.
-bool scoa_thread_create(scoa_thread_id_t& thread, thread_func start,
-    u32int_t cpu, void* arg);
+#if defined(IS_LINUX)
+#   include <pthread.h>
+#elif defined(IS_FREEBSD)
+#   include <pthread_np.h>  // FreeBSD's Non-POSIX type definitions
+#   include <sys/cpuset.h>
 
-/// Join a thread of execution and wait for its finish.
-bool scoa_thread_join(scoa_thread_id_t& thread);
+typedef cpuset_t cpu_set_t;
 
-/// Detachment of a thread of execution.
-bool scoa_thread_detach(scoa_thread_id_t& thread);
+#endif // IS_LINUX
 
 #endif // !__LIBSCOA_THREADS_H

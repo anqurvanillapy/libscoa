@@ -11,6 +11,7 @@
 
 #include "../libscoa.h"
 #include "../../common/platform.h"
+#include <atomic>
 
 #if defined(IS_LINUX)
 #   define AIO_USE_EPOLL
@@ -29,17 +30,7 @@ enum {
     AIO_DESTROYED   = (uint32_t)-1
 }
 
-class AIOFacility {
-public:
-    AIOFacility();
-    bool destroy();
-private:
-#if defined(AIO_USE_EPOLL)
-    int epfd;
-    struct epoll_event events[MAX_EVENTS];
-#elif defined(AIO_USE_KQUEUE)
-#endif
-}
+typedef struct scoa_aio_facility_t scoa_aio_facility_t;
 
 class AsyncIO {
 public:
@@ -51,10 +42,13 @@ public:
 
     // Stop the event mechanism.
     void stop();
+
+    // Destroy scoa_aio_facility_t
+    void final();
 private:
     uint32_t cpu;
     scoa_thread_id_t tid;
-    AIOFacility* facility;
+    scoa_aio_facility_t* facility;
 }
 
 namespace scoa {

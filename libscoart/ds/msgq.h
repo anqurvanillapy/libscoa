@@ -1,8 +1,8 @@
 #ifndef __LIBSCOA_MSGQ_H
 #define __LIBSCOA_MSGQ_H
 
-#include <boost/lockfree/queue.hpp>
 #include "../libscoa.h"
+#include <boost/lockfree/queue.hpp>
 
 /// Lock-free queue for implementing inbox/outbox.
 template <typename T>
