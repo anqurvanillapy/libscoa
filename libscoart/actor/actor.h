@@ -41,7 +41,7 @@ private:
     // Messages in the charge of scheduler
     MessageQueue<SocaMessage&>& inbox;
     
-    vector<scoa_msg_t&> tempbox;
+    std::list<scoa_msg_t&> tempbox;
 
     // Dispatched by which scheduler
     Scheduler& scheduler;

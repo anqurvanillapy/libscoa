@@ -1,10 +1,9 @@
 #ifndef __LIBSCOA_H
 #define __LIBSCOA_H
-
-typedef struct scoa_msg_t {
-    // TODO
-    //scoa_msg should be a vector
-} scoa_msg_t;
+#include <vector>
+#include <memory>
+#include <boost/any.hpp>
+typedef std::array<boost::any> scoa_msg_t;
 
 namespace scoa {
     void spawn(Actor& actor);
