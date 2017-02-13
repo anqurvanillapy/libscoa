@@ -3,11 +3,11 @@
 
 /// Macro for extern "C".
 #if defined(__cpluscplus)
-#   define SCOA_EXTERN_C_BEGIN extern "C" {
-#   define SCOA_EXTERN_C_END }
+#   define __SCOA_EXTERN_C_BEGIN extern "C" {
+#   define __SCOA_EXTERN_C_END }
 #else
-#   define SCOA_EXTERN_C_BEGIN
-#   define SCOA_EXTERN_C_END
+#   define __SCOA_EXTERN_C_BEGIN
+#   define __SCOA_EXTERN_C_END
 #endif
 
 /// Platform (Win32, Visual Studio, and further MinGW not supported).

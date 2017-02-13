@@ -8,14 +8,14 @@ scoa_cpu_count()
 }
 
 bool
-scoa_cpu_assign(uint32_t count, std::thread& thread, bool nopin, bool pinaio)
+scoa_cpu_assign(uint32_t id, std::thread& thread, bool nopin, bool pinaio)
 {
     cpu_set_t cpuset;
 
     CPU_ZERO(&cpuset);
-    CPU_SET(count, &cpuset);
-    int ret = pthread_setaffinity_np(thread.native_handle(),
-        sizeof(cpu_set_t), &cpuset);
+    CPU_SET(id, &cpuset);
+    int ret = pthread_setaffinity_np(thread.native_handle(), sizeof(cpu_set_t),
+        &cpuset);
 
     if (ret != 0) return false;
 

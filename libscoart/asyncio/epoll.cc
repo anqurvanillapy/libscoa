@@ -1,4 +1,4 @@
-#include "aio.h"
+#include "asyncio.h"
 
 #ifdef AIO_USE_EPOLL
 
@@ -19,25 +19,19 @@ AsyncIO::AsyncIO()
     epoll_ctl(facility.epfd, EPOLL_CTL_ADD, facility.evfd, &epconfig);
 }
 
-void
-AsyncIO::final()
+~AsyncIO::AsyncIO()
 {
     terminated.store(true, memory_order_relaxed);
     evenfd_write(evfd, 1);
+
+    delete aio_thread;
 }
 
-/// Thread declaration for creating epoll loop.
 void
-operator() ()
+AsyncIO::thread_func()
 {
     while (terminated.load(memory_order_relaxed)) {
-        // Timeout -1 to make epoll_wait block indefinitely
-        int nfds = epoll_wait(f.epfd, f.events, MAX_EVENTS, -1);
-        int i;
-
-        for (i = 0; i < nfds; ++i) {
-            // TODO
-        }
+        
     }
 }
 

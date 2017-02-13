@@ -8,7 +8,6 @@
 uint32_t scoa_cpu_count();
 
 /// Thread assignment to CPUs (pinning).
-bool scoa_cpu_assign(uint32_t count, std::thread& thread, bool nopin,
-    bool pinaio);
+bool scoa_cpu_assign(uint32_t id, std::thread& thread);
 
 #endif // !__LIBSCOA_CPU_H

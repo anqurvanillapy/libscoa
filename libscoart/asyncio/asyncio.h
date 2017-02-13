@@ -1,13 +1,13 @@
 /**
- *  AIO
- *  ===
+ *  Asnyc I/O
+ *  =========
  *
  *  Asynchronous I/O implemented by Linux's epoll and macOS/BSD's kqueue, for
  *  better portability.
  */
 
-#ifndef __LIBSCOA_AIO_H
-#define __LIBSCOA_AIO_H
+#ifndef __LIBSCOA_ASYNCIO_H
+#define __LIBSCOA_ASYNCIO_H
 
 #include "../libscoa.h"
 #include "../../common/platform.h"
@@ -31,22 +31,17 @@ enum {
     AIO_READ        = 0,
     AIO_WRITE       = 1 << 0,
     AIO_DESTROYED   = (uint32_t)-1
-}
+};
 
-class AsyncIO {
+class AsyncIOFacility {
 public:
-    // Initialize the notification mechanism.
-    AsyncIO();
-    ~AsyncIO();
+    explicit AsyncIOFacility();
+    ~AsyncIOFacility();
 
-    // Make it callable by the thread.
-    void operator() ();
-
-    // Terminate the mechanism.
-    void final();
+    // Function for aio_thread to run.
+    void thread_func();
 private:
-    uint32_t cpu;
-    std::thread::id tid;
+    std::thread* aio_thread;
 
 #if defined(AIO_USE_EPOLL)
     int epfd;
@@ -55,15 +50,10 @@ private:
     std::atomic_bool terminated;    
 #elif defined(AIO_USE_KQUEUE)
 #endif
-}
+};
 
-void scoa_aio_start();
+void scoa_aio_start(uint32_t cpu);
 
 bool scoa_aio_stop();
-
-namespace scoa {
-    // TODO: Non-blocking stdio
-    void fputs(int fd, std::string str); // int - stdin, stdout, stderr
-} // namespace scoa
 
 #endif // !__LIBSCOA_AIO_H
