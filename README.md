@@ -39,7 +39,7 @@ int
 main(int argc, const char *argv[])
 {
     // Default number of threads and other options.
-    scoa_init(SCOA_THREADS_NUM, SCOA_DEFAULT);
+    scoa::init(SCOA_THREADS_NUM, SCOA_DEFAULT);
 
     // Spawn the actor.
     scoa::spawn(Foo);
@@ -59,8 +59,7 @@ public:
     be()
     {
         std::string name = "John";
-        send("hi");
-        send(&name);
+        send(Bar) << "hi" << &name;
     }
 };
 
@@ -81,7 +80,7 @@ public:
 int
 main(int argc, const char *argv[])
 {
-    scoa_init(SCOA_THREADS_NUM, SCOA_DEFAULT);
+    scoa::init(SCOA_THREADS_NUM, SCOA_DEFAULT);
 
     // Spawn the actors.
     scoa::spawn(Foo);

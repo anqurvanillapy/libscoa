@@ -18,7 +18,7 @@ typedef struct scoa_msg_t {
 } scoa_msg_t;
 
 namespace scoa {
-    void scoa_init(uint32_t threads_num, int opt);
+    void init(uint32_t threads_num, int opt);
     void spawn(Actor& actor);
 } // namespace scoa
 
