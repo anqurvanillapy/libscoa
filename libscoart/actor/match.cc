@@ -56,7 +56,6 @@ Matcher &Matcher::callfunc(std::function<void()> &lambda)
 
 Matcher &Matcher::then()
 {
-
     //save current_branch_flow
     cond_flow_vec.push_back(current_branch_flow);
     //if current_branch_flow is empty, need to push an empty condition node
@@ -66,7 +65,6 @@ Matcher &Matcher::then()
     cond_node_vec.push_back(&current_branch_flow->back());
     add_branch();
     return *this;
-
 }
 
 Matcher &Matcher::maybe()
