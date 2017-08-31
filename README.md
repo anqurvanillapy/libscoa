@@ -8,7 +8,7 @@ libscoa
 Prerequisites
 -------------
 
-- `boost`
+- `libuv`
 
 ### For dev
 
