@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project(libscoa C CXX)
 
 # Main library
-add_library(libscoa_lib libscoart/libscoa.h)
+add_library(libscoa_lib include/libscoa.h)
 
 # Unit testing using GTest
 enable_testing()
