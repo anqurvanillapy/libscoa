@@ -44,10 +44,10 @@ public:
 private:
     struct lfq_node {
         T t;
-        shared_ptr<lfq_node> next;
-    }
+        std::shared_ptr<lfq_node> next;
+    };
 
-    std::atomic_size_t len{0};
+    std::atomic_size_t len_{0};
     std::shared_ptr<lfq_node> head;
     std::shared_ptr<lfq_node> tail;
 };
