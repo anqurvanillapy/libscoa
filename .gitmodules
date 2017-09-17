@@ -1,0 +1,6 @@
+[submodule "third_party/gperftools"]
+	path = third_party/gperftools
+	url = git@github.com:gperftools/gperftools.git
+[submodule "third_party/libuv"]
+	path = third_party/libuv
+	url = git@github.com:libuv/libuv.git
