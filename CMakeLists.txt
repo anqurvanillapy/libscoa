@@ -1,14 +1,24 @@
-cmake_minimum_required(VERSION 3.0)
-project(libscoa C CXX)
+cmake_minimum_required (VERSION 2.8)
 
-# Main library
-add_library(libscoa_lib include/libscoa.h)
+option (test "Build all tests." OFF)
 
-# Unit testing using GTest
-enable_testing()
-find_package(GTest REQUIRED)
+set (PROJECT_NAME libscoa)
+project (${PROJECT_NAME} C CXX)
 
-add_executable(test_suite test/test.cc)
-target_link_libraries(test_suite GTest::GTest GTest::Main)
+include_directories (include)
 
-add_test(libscoa_test test_suite)
+file (GLOB SOURCES "src/*.cc")
+
+add_library (libscoa_shlib SHARED ${SOURCES})
+install (TARGETS libscoa_shlib DESTINATION /usr/lib)
+
+if (test)
+  add_subdirectory (third_party/googletest)
+  enable_testing ()
+  include_directories (${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
+  add_executable (test_main test_main.cc)
+  target_link_liraries (test_main gtest gtest_main)
+  target_link_liraries (test_main libscoa_shlib)
+  add_test(NAME test-main COMMAND test_main)
+endif()
