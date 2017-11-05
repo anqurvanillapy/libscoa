@@ -17,7 +17,7 @@ if (test)
   enable_testing ()
   include_directories (${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-  add_executable (test_main test_main.cc)
+  add_executable (test_main tests/test_main.cc)
   target_link_liraries (test_main gtest gtest_main)
   target_link_liraries (test_main libscoa_shlib)
   add_test(NAME test-main COMMAND test_main)

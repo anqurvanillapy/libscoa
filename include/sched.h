@@ -1,20 +1,18 @@
 #pragma once
 
-namespace scoa {
+#include "common.h"
 
-/// sched is the scheduler that handles tasks and messages from actors in the
-/// queue.
+namespace scoa {
 
 class sched {
 public:
-    sched() { /* nop */ }
-    ~sched() { /* nop */ }
+	sched()     = default;
+	~sched()    = default;
 
-    // No copy and move.
-    sched(const sched&) = delete;
-    sched& operator=(const sched&) = delete;
-    sched(sched&&) = delete;
-    sched& operator=(sched&&) = delete;
+	sched(const sched&)             = delete;
+	sched& operator=(const sched&)  = delete;
+	sched(sched&&)                  = delete;
+	sched& operator=(sched&&)       = delete;
 private:
 };
 
