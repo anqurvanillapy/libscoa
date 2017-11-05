@@ -13,6 +13,8 @@ public:
 	sched& operator=(const sched&)  = delete;
 	sched(sched&&)                  = delete;
 	sched& operator=(sched&&)       = delete;
+
+	void yield();
 private:
 };
 
