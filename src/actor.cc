@@ -1,8 +1,8 @@
-#include "../include/actor.h"
+#include "libscoa/actor.h"
 
 namespace scoa {
 
-thread_local sched tlsched;
+thread_local sched tl_sched;
 
 actor::actor(int id)
 	: id_{id}
@@ -19,7 +19,7 @@ void
 actor::start()
 {
 	be();
-	tlsched.yield();
+	tl_sched.yield();
 }
 
 } /* namespace scoa */

@@ -1,4 +1,4 @@
-#include "../include/stackpool.h"
+#include "libscoa/stackpool.h"
 
 namespace scoa {
 

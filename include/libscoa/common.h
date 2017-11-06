@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cassert>
+#include <cstdint>
+
 #include <list>
 
 namespace scoa {

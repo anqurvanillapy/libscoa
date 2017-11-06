@@ -5,6 +5,12 @@
 
 namespace scoa {
 
+typedef int_fast32_t scoa_msg_int32_t;
+typedef int_fast64_t scoa_msg_int64_t;
+
+typedef struct {
+} scoa_msg_t;
+
 class sched;
 
 class actor {
