@@ -8,7 +8,7 @@ set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_definitions (-Wall -Wextra -pedantic -lpthread -std=c++11)
 
-include_directories (include)
+include_directories ("${CMAKE_SOURCE_DIR}/include")
 
 file (GLOB libscoa_src "src/*.cc")
 

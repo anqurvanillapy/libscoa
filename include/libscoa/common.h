@@ -3,7 +3,9 @@
 #include <cassert>
 #include <cstdint>
 
+#include <string>
 #include <list>
+#include <unordered_map>
 
 namespace scoa {
 
