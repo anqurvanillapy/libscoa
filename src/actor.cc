@@ -2,23 +2,59 @@
 
 namespace scoa {
 
-thread_local sched tl_sched;
+static thread_local sched tl_sched;
 
-actor::actor(int id)
-	: id_{id}
+matcher&
+matcher::operator||(atom& a)
 {
-	/* nop */
+	patterns_[a.val_] = a.f_;
+	return *this;
 }
 
-actor::~actor()
+std::function<SCOA_MATCHFN_TYPE>&
+matcher::getfn(unsigned atom)
 {
-	/* nop */
+	return patterns_[atom];
+}
+
+actor::actor(int id, char* pool)
+	: id_{id}
+	, hp_{(unsigned long)pool}
+	, sp_{hp_ + SCOA_STACKSIZ}
+	, env_{}
+	, prev_{}
+	, next_{}
+{
+	assert(sp_);
+	be();
 }
 
 void
-actor::start()
+actor::init()
 {
-	be();
+	if (::setjmp(env_)) return;
+#if defined(__i386__)
+	__asm__ __volatile__(
+		"movl %0, %%esp"
+		:
+		: "r"(tl_sched.current_actor->sp_)
+		: "%esp"
+	);
+#elif defined(__x86_64__)
+	__asm__ __volatile__(
+		"movq %0, %%rsp"
+		:
+		: "r"(tl_sched.current_actor->sp_)
+		: "%rsp"
+	);
+#endif
+	void *msg = NULL;
+	start_(msg);
+}
+
+void
+actor::start_(void* msg)
+{
 	tl_sched.yield();
 }
 

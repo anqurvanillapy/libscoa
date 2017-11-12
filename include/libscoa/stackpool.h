@@ -4,6 +4,8 @@
 
 namespace scoa {
 
+#define SCOA_STACKPOOL_INITNUM 8
+
 class stackpool {
 public:
 	stackpool();

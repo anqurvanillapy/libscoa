@@ -2,16 +2,15 @@
 
 namespace scoa {
 
-template <typename T>
-std::unordered_map<std::string, const char*> scoa_msg_t<T>::set_{};
-
-template <typename T>
-const char*
-scoa_msg_t<T>::get_atom_(const std::string& s)
+atom::atom(unsigned val)
+	: val_{val}
 {
-	auto const p = s.c_str();
-	atom_size_check(p);
-	return p;
+	/* nop */
+}
+void
+atom::operator>>(const std::function<SCOA_MATCHFN_TYPE>& f)
+{
+	f_ = f;
 }
 
 } /* namespace scoa */

@@ -2,16 +2,17 @@
 
 #include <cassert>
 #include <cstdint>
+#include <csetjmp>
 
+#include <memory>
 #include <string>
 #include <list>
-#include <unordered_map>
+#include <vector>
+#include <functional>
 
 namespace scoa {
 
-#define SCOA_MAX_ACTOR_NUM 64
-
 #define SCOA_STACKSIZ (1024 * 1024)
-#define SCOA_STACKPOOL_INITNUM 8
+#define SCOA_MATCHFN_TYPE void(void*)
 
 } /* namespace scoa */
