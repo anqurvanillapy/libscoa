@@ -1,27 +1,29 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required(VERSION 2.8)
 
-option (test "Build all tests." OFF)
+option(test "Build all tests." OFF)
 
-project (libscoa C CXX)
+set(PROJECT_NAME libscoa)
 
-set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
+project(${PROJECT_NAME} C CXX)
 
-add_definitions (-Wall -Wextra -pedantic -lpthread -std=c++11)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include_directories ("${CMAKE_SOURCE_DIR}/include")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -lpthread -std=c++17")
 
-file (GLOB libscoa_src "src/*.cc")
+include_directories("${CMAKE_SOURCE_DIR}/include")
 
-add_library (libscoa_shlib SHARED ${libscoa_src})
-install (TARGETS libscoa_shlib DESTINATION /usr/lib)
+file(GLOB libscoa_src "src/*.cc")
 
-# if (test)
-#   add_subdirectory (third_party/googletest)
-#   enable_testing ()
-#   include_directories (${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+add_library(libscoa_shlib SHARED ${libscoa_src})
+install(TARGETS libscoa_shlib DESTINATION /usr/lib)
 
-#   add_executable (test_main tests/test_main.cc)
-#   target_link_liraries (test_main gtest gtest_main)
-#   target_link_liraries (test_main libscoa_shlib)
-#   add_test(NAME test-main COMMAND test_main)
-# endif()
+if(test)
+  add_subdirectory(third_party/googletest)
+  enable_testing()
+  include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
+  add_executable(test_main tests/test_main.cc)
+  target_link_libraries(test_main gtest gtest_main)
+  # target_link_liraries(test_main libscoa_shlib)
+  add_test(NAME test-main COMMAND test_main)
+endif()
