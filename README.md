@@ -1,96 +1,104 @@
-libscoa
-=======
+# libscoa
 
-**S**elf-**c**ultivation **o**f **a**ctors.
+> *Scoa: Self-cultivation of actors.*
 
-**Warning:** Work in progress.
+`libscoa` is a toy actor model runtime in C++17.
 
-Prerequisites
--------------
+## Usage
 
-- `libuv`
-
-### For dev
-
-- `gtest`
-
-Usage
------
-
-*(These examples here are liable to change, due to the current development.)*
-
-- `hello.cc` to print `Hello, world!` using libscoa's asynchronous I/O API:
+- `hello.cc` prints `Hello, world!` to screen.
 
 ```cpp
 #include "libscoa.h"
 
-class Foo : public Actor {
+class foo_be : public scoa::actor_be<foo_be> {
 public:
-    // Specify a behaviour.
-    void
+    auto
     be()
     {
-        // Use scoa::acout (async character output) to print the message.
-        scoa::acout << "Hello, world!" << std::endl;
+        return scoa::match{
+            [&] {
+                scoa::asio::printf("Hello, world!\n");
+                stop();
+            }
+        };
     }
 };
 
 int
-main(int argc, const char *argv[])
+main()
 {
-    // Default number of threads and other options.
-    scoa::init(SCOA_THREADS_NUM, SCOA_DEFAULT);
+    scoa::ctx ctx;
+    foo_be foo;
 
-    // Spawn the actor.
-    scoa::spawn(Foo);
+    ctx.spawn_dispatch("foo", &foo_be);
+    ctx.start();
 
     return 0;
 }
 ```
 
-- `match.cc` to match and catch the received messages:
+- `pingpong.cc` performs ping-pong playing.
 
 ```cpp
 #include "libscoa.h"
 
-class Foo : public Actor {
+class pinger : public soca::actor_be<pinger> {
 public:
-    void
+    auto
     be()
     {
-        std::string name = "John";
-        send(Bar) << "hi" << &name;
+        return scoa::match{
+            [&] (scoa::ion_t) {
+                // ion_t is atom message type.
+                if (i_) {
+                    send("pong", "ball"_ion);
+                    --i_;
+                } else {
+                    send("pong", 0);
+                }
+            },
+            [&] (auto&&) {
+                stop();
+            }
+        };
     }
+private:
+    int i_{42}; // 42 balls
 };
 
-class Bar : public Actor {
+class ponger : public scoa::actor_be<ponger> {
 public:
-    void
+    auto
     be()
     {
-        std::string name;
-
-        // Match "hi", catch a name, and fputs asynchronously the received name.
-        recv << "hi" >> &name .fn([=] {
-            scoa::afputs(stdout, &name);
-        });
+        return scoa::match{
+            [&] (scoa::ion_t) {
+                send("ping", "ball"_ion);
+            },
+            [&] (auto&&) {
+                send("ping", 0);
+                stop();
+            }
+        };
     }
 };
 
 int
-main(int argc, const char *argv[])
+main()
 {
-    scoa::init(SCOA_THREADS_NUM, SCOA_DEFAULT);
+    scoa::ctx ctx;
+    pinger ping;
+    ponger pong;
 
-    // Spawn the actors.
-    scoa::spawn(Foo);
-    scoa::spawn(Bar);
+    ctx.spawn_dispatch("ping", &ping, "ball"_ion);
+    ctx.spawn("pong", &pong);
+    ctx.start();
 
     return 0;
 }
 ```
 
-License
--------
+## License
 
 MIT

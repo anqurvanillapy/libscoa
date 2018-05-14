@@ -1,21 +1,9 @@
-build
-.vscode
 
-#### joe made this: http://goel.io/joe
+# Created by https://www.gitignore.io/api/c++
 
-#####=== CMake ===#####
-
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
-
-#####=== C++ ===#####
+### C++ ###
+# Prerequisites
+*.d
 
 # Compiled Object files
 *.slo
@@ -34,6 +22,7 @@ CTestTestfile.cmake
 
 # Fortran module files
 *.mod
+*.smod
 
 # Compiled Static libraries
 *.lai
@@ -46,3 +35,5 @@ CTestTestfile.cmake
 *.out
 *.app
 
+
+# End of https://www.gitignore.io/api/c++
