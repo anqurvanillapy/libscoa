@@ -47,6 +47,8 @@ struct ion_constant_<C, Cs...> {
 
 } /* namespace */
 
+// XXX: String literal operator template is not in standard.  Supported as an
+// extension in GCC/Clang.
 template <typename CharT, CharT ...String>
 constexpr uint64_t
 operator""_ion()

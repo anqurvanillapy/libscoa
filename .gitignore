@@ -37,3 +37,15 @@
 
 
 # End of https://www.gitignore.io/api/c++
+
+# Created by https://www.gitignore.io/api/gcov
+
+### Gcov ###
+# gcc coverage testing tool files
+
+*.gcno
+*.gcda
+*.gcov
+
+
+# End of https://www.gitignore.io/api/gcov
