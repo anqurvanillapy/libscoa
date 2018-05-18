@@ -1,4 +1,4 @@
 .PHONY: clean
 
 clean:
-	rm -f *.gch *.out
+	rm -f *.o *.out *.gch *.gcno *.gcda *.gcov
