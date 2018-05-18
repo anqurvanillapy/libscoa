@@ -11,38 +11,19 @@ class sched;
 
 class actor_base {
 public:
-	virtual void send()     = 0;
+	actor_base()
+		: hp_{new char[CO_CALLSTACK_SIZ]}
+		, sp_{hp_ + CO_CALLSTACK_SIZ}
+	{
+	}
 
 	friend class sched;
 	template <typename T> friend class actor;
+
+	void send();
 protected:
 	virtual void be_()      = 0;
-	virtual void recv_()    = 0;
-
-	size_t sp_;
-	std::jmp_buf env_;
-};
-
-template <typename T>
-class actor : public actor_base {
-public:
-	actor()     = default;
-	~actor()    = default;
-
-	actor(const actor<T>&)              = delete;
-	actor& operator=(const actor<T>&)   = delete;
-	actor(actor<T>&&)                   = delete;
-	actor& operator=(actor<T>&&)        = delete;
-private:
-	virtual void
-	be_() override
-	{
-		auto m = static_cast<T*>(this)->be();
-		static_assert(std::is_invocable_v<decltype(m)>);
-
-		while (!terminating_) {
-		}
-	}
+	void recv_();
 
 	void
 	init_env_()
@@ -68,10 +49,36 @@ private:
 			: "%rsp"
 		);
 #endif
+		sched::current_actor_->be_();
+		::longjmp(sched::main_env_, static_cast<int>(_co_rc_t::END));
 	}
 
+	char* hp_;
+	char* sp_;
+	std::jmp_buf env_;
 	bool terminating_{};
+};
 
+template <typename T>
+class actor : public actor_base {
+public:
+	actor()     = default;
+	~actor()    = default;
+
+	actor(const actor<T>&)              = delete;
+	actor& operator=(const actor<T>&)   = delete;
+	actor(actor<T>&&)                   = delete;
+	actor& operator=(actor<T>&&)        = delete;
+private:
+	virtual void
+	be_() override
+	{
+		auto m = static_cast<T*>(this)->be();
+		static_assert(std::is_invocable_v<decltype(m)>);
+
+		while (!terminating_) {
+		}
+	}
 };
 
 } /* namespace scoa */

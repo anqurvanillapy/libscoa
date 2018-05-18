@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <list>
 #include <thread>
 #include <atomic>
 #include <cstring>
@@ -12,11 +13,10 @@
 namespace scoa {
 
 class actor_base;
-template <typename T> class actor;
 
 namespace {
 
-enum class _co_rc_t {
+enum class _co_rc_t : int {
 	INIT,
 	END,
 	NEXT = 1,
@@ -35,7 +35,7 @@ public:
 	sched(sched&&)                  = delete;
 	sched& operator=(sched&&)       = delete;
 
-	template <typename T> friend class actor;
+	friend class actor_base;
 
 	void
 	steal()
@@ -43,9 +43,17 @@ public:
 		nactor_.fetch_add(1, std::memory_order_relaxed);
 	}
 private:
-	thread_local static actor_base* current_actor_;
-	std::atomic_uint nactor_;
+	thread_local static actor_base*             current_actor_;
+	thread_local static std::list<actor_base*>  actor_list_;
+
+	thread_local static std::atomic_uint        nactor_;
+	thread_local static std::jmp_buf            main_env_;
 };
+
+thread_local actor_base*            sched::current_actor_{};
+thread_local std::list<actor_base*> sched::actor_list_{};
+thread_local std::atomic_uint       nactor_{};
+thread_local std::jmp_buf           main_env_{};
 
 class ctx {
 public:
