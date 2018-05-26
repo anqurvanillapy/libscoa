@@ -43,7 +43,7 @@ main()
 ```cpp
 #include "libscoa.h"
 
-class pinger : public soca::actor_be<pinger> {
+class pinger : public scoa::actor_be<pinger> {
 public:
     auto
     be()

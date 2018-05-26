@@ -6,15 +6,15 @@ int
 main()
 {
 	constexpr uint64_t a = "-_"_ion;
-	constexpr uint64_t b = 0b000001'000010;
+	constexpr uint64_t b = 0b000000'000001;
 	static_assert(a == b, "misc ion literal failed");
 
 	constexpr uint64_t c = "123"_ion;
-	constexpr uint64_t d = 0b000100'000101'000110;
+	constexpr uint64_t d = 0b000011'000100'000101;
 	static_assert(c == d, "numeric ion literal failed");
 
 	constexpr uint64_t e = "Bam"_ion;
-	constexpr uint64_t f = 0b001110'100111'110011;
+	constexpr uint64_t f = 0b001101'100110'110010;
 	static_assert(e == f, "alphabetic ion literl failed");
 
 #ifdef SCOA_TEST_STATIC_FAIL_CASES

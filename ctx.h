@@ -28,7 +28,7 @@ enum class _co_rc_t : int {
 
 /*
  *  ============================================================================
- *  Scheduler and Actor
+ *  Scheduler
  *  ============================================================================
  */
 
@@ -46,6 +46,13 @@ public:
 
 	static void steal();
 	static void yield();
+
+	void
+	add(actor_base* a)
+	{
+		actor_list_.emplace_back(a);
+		nactor_.fetch_add(1, std::memory_order_relaxed);
+	}
 private:
 	thread_local static actor_base*             current_actor_;
 	thread_local static std::list<actor_base*>  actor_list_;
@@ -59,49 +66,66 @@ thread_local std::list<actor_base*> sched::actor_list_{};
 thread_local std::atomic_uint       nactor_{};
 thread_local std::jmp_buf           main_env_{};
 
+/*
+ *  ============================================================================
+ *  Actor (abstract class)
+ *  ============================================================================
+ */
+
 class actor_base {
 public:
 	actor_base()
 		: hp_{new char[CO_CALLSTACK_SIZ]}
 		, sp_{hp_ + CO_CALLSTACK_SIZ}
 	{
+		/* nop */
+	}
+
+	~actor_base()
+	{
+		delete[] hp_;
 	}
 
 	friend class sched;
 	template <typename T> friend class actor;
 
+	std::string
+	id() const
+	{
+		return id_;
+	}
+
 	void send();
 protected:
-	virtual void be_()      = 0;
+	virtual void be_() = 0;
+
 	void recv_();
 
 	void
 	init_env_()
 	{
-		if (::setjmp(env_)) start_();
+		if (::setjmp(env_)) {
+			start_();
+		}
 	}
 
 	static void
 	start_()
 	{
-#if defined(__i386__)
-		__asm__ __volatile__ (
-			"movl %0， %%esp"
-			:
-			: "r"(sched::current_actor_->sp_)
-			: "%esp"
-		);
-#elif defined(__x86_64__)
+		auto sp = reinterpret_cast<size_t>(sched::current_actor_->sp_);
+
 		__asm__ __volatile__(
 			"movq %0, %%rsp"
 			:
-			: "r"(sched::current_actor_->sp_)
+			: "r"(sp)
 			: "%rsp"
 		);
-#endif
+
 		sched::current_actor_->be_();
 		::longjmp(sched::main_env_, static_cast<int>(_co_rc_t::END));
 	}
+
+	std::string id_;
 
 	char* hp_;
 	char* sp_;
@@ -170,11 +194,9 @@ public:
 		for (auto&& t : ts_) t.join();
 	}
 private:
-	unsigned ncores_{std::thread::hardware_concurrency()};
+	unsigned ncores_;
 	sched** scheds_;
 	std::vector<std::thread> ts_;
 };
-
-#include "actor.h"
 
 } /* namespace scoa */
