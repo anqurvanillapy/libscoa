@@ -2,8 +2,13 @@
 
 using namespace scoa::literals;
 
+#ifdef SCOA_TEST_SINGLE
 int
 main()
+#else
+void
+test_ion()
+#endif /* SCOA_TEST_SINGLE */
 {
 	constexpr uint64_t a = "-_"_ion;
 	constexpr uint64_t b = 0b000000'000001;
@@ -23,6 +28,4 @@ main()
 	constexpr uint64_t i = "00000000001"_ion;
 	constexpr uint64_t j = u"foo"_ion;
 #endif /* SCOA_TEST_STATIC_FAIL_CASES */
-
-	return 0;
 }

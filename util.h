@@ -39,6 +39,8 @@ class spmcq {
 public:
 	spmcq()
 	{
+		static_assert(std::is_pointer_v<T>, "T must be a pointer type");
+
 		auto n = new (std::nothrow) _node_t();
 		assert(n);
 		n->data.store(nullptr, std::memory_order_relaxed);
@@ -57,7 +59,7 @@ public:
 		auto t = t_.load(std::memory_order_relaxed);
 		delete t.obj;
 		t.obj = nullptr;
-		t_.sotre(t, std::memory_order_relaxed);
+		t_.store(t, std::memory_order_relaxed);
 	}
 
 	spmcq(const spmcq<T>&)              = delete;
@@ -70,11 +72,11 @@ public:
 	{
 		auto n = new (std::nothrow) _node_t;
 		assert(n);
-		n->data.store(nullptr, std::memory_order_relaxed);
+		n->data.store(data, std::memory_order_relaxed);
 		n->next.store(nullptr, std::memory_order_relaxed);
 		auto prev =
-			std::atomic_exchange_explicit(h_, n, std::memory_order_relaxed);
-		h_.store(n, std::memory_order_release);
+			std::atomic_exchange_explicit(&h_, n, std::memory_order_relaxed);
+		prev->next.store(n, std::memory_order_release);
 		data = nullptr;
 	}
 
@@ -96,7 +98,7 @@ public:
 	{
 		_refcnt_t<_node_t*> cmp = t_.load(std::memory_order_relaxed);
 		_refcnt_t<_node_t*> xchg;
-		_node_t* t, next;
+		_node_t *t, *next;
 
 		do {
 			t = cmp.obj;
@@ -108,14 +110,14 @@ public:
 			xchg.cnt = cmp.cnt + 1;
 		} while (
 			!std::atomic_compare_exchange_weak_explicit(
-				t_, &t, next,
+				&t_, &cmp, xchg,
 				std::memory_order_relaxed,
 				std::memory_order_relaxed
 			)
 		);
 
 		std::atomic_thread_fence(std::memory_order_acq_rel);
-		auto data = next->data.load(std::memory_order_relaxed);
+		T data = next->data.load(std::memory_order_relaxed);
 		next->data.store(nullptr, std::memory_order_relaxed);
 
 		while (t->data.load(std::memory_order_relaxed) != nullptr) {
@@ -141,7 +143,7 @@ private:
 	};
 
 	alignas(64) std::atomic<_node_t*> h_;
-	alignas(64) _refcnt_t<_node_t*> t_;
+	alignas(64) std::atomic<_refcnt_t<_node_t*>> t_;
 };
 
 template <typename T, std::size_t Siz>

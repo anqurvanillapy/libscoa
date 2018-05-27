@@ -1,5 +1,5 @@
 #include "actor.h"
-#include "match.h"
+#include "util.h"
 
 using namespace scoa;
 
@@ -14,9 +14,13 @@ public:
 	}
 };
 
+#ifdef SCOA_TEST_SINGLE
 int
 main()
+#else
+void
+test_actor()
+#endif /* SCOA_TEST_SINGLE */
 {
 	foo a;
-	return 0;
 }

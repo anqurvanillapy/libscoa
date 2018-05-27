@@ -14,8 +14,12 @@ bar()
 }
 #endif /* SCOA_TEST_STATIC_FAIL_CASES */
 
+#ifdef SCOA_TEST_SINGLE
 int
 main()
+#else
+void
+test_util_misc()
+#endif /* SCOA_TEST_SINGLE */
 {
-	return 0;
 }
